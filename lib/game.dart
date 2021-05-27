@@ -234,7 +234,11 @@ class _GamePageState extends State<GamePage> {
       body: Container(
         color: Color(0XFFF5BB00),
         child: Stack(
-          children: [],
+          children: [
+            Stack(
+              children: getPieces(),
+            ),
+          ],
         ),
       ),
     );
