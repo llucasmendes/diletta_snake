@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:diletta_snake/control_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:diletta_snake/direction_type.dart';
 
@@ -31,22 +32,18 @@ class _GamePageState extends State<GamePage> {
   int score = 0;
 
   void draw() async {
-    // 1
     if (positions.length == 0) {
       positions.add(getRandomPositionWithinRange());
     }
 
-    // 2
     while (length > positions.length) {
       positions.add(positions[positions.length - 1]);
     }
 
-    // 3
     for (var i = positions.length - 1; i > 0; i--) {
       positions[i] = positions[i - 1];
     }
 
-    // 4
     positions[0] = (await getNextPosition(positions[0]))!;
   }
 
@@ -148,19 +145,15 @@ class _GamePageState extends State<GamePage> {
     draw();
     drawFood();
 
-    // 1
     for (var i = 0; i < length; ++i) {
-      // 2
       if (i >= positions.length) {
         continue;
       }
 
-      // 3
       pieces.add(
         Piece(
           posX: positions[i].dx.toInt(),
           posY: positions[i].dy.toInt(),
-          // 4
           size: step,
           color: Colors.red,
         ),
@@ -171,7 +164,11 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget getControls() {
-    return Container();
+    return ControlPanel(
+      onTapped: (Direction newDirection) {
+        direction = newDirection;
+      },
+    );
   }
 
   int roundToNearestTens(int num) {
@@ -186,9 +183,12 @@ class _GamePageState extends State<GamePage> {
   void changeSpeed() {
     if (timer != null && timer!.isActive) timer!.cancel();
 
-    timer = Timer.periodic(Duration(milliseconds: 200 ~/ speed), (timer) {
-      setState(() {});
-    });
+    timer = Timer.periodic(
+      Duration(milliseconds: 200 ~/ speed),
+      (timer) {
+        setState(() {});
+      },
+    );
   }
 
   Widget getScore() {
@@ -242,6 +242,7 @@ class _GamePageState extends State<GamePage> {
             Stack(
               children: getPieces(),
             ),
+            getControls(),
           ],
         ),
       ),
