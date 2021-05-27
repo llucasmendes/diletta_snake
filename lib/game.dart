@@ -47,7 +47,7 @@ class _GamePageState extends State<GamePage> {
     }
 
     // 4
-    positions[0] = await getNextPosition(positions[0]);
+    positions[0] = (await getNextPosition(positions[0]))!;
   }
 
   Direction getRandomDirection([DirectionType? type]) {
@@ -123,8 +123,20 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
-  Future<Offset> getNextPosition(Offset position) async {
-    return position;
+  Future<Offset?> getNextPosition(Offset position) async {
+    Offset? nextPosition;
+
+    if (direction == Direction.right) {
+      nextPosition = Offset(position.dx + step, position.dy);
+    } else if (direction == Direction.left) {
+      nextPosition = Offset(position.dx - step, position.dy);
+    } else if (direction == Direction.up) {
+      nextPosition = Offset(position.dx, position.dy - step);
+    } else if (direction == Direction.down) {
+      nextPosition = Offset(position.dx, position.dy + step);
+    }
+
+    return nextPosition;
   }
 
   void drawFood() {
