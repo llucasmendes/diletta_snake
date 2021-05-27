@@ -4,7 +4,11 @@ class ControlButton extends StatelessWidget {
   final Function? onPressed;
   final Icon? icon;
 
-  const ControlButton({Key? key, this.onPressed, this.icon}) : super(key: key);
+  const ControlButton({
+    Key? key,
+    this.onPressed,
+    this.icon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

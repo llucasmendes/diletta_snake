@@ -51,7 +51,9 @@ class _PieceState extends State<Piece> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    // ignore: unused_local_variable
     final screenWidth = screenSize.width;
+    // ignore: unused_local_variable
     final screenHeight = screenSize.height;
 
     return Positioned(

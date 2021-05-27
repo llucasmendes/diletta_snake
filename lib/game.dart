@@ -75,8 +75,18 @@ class _GamePageState extends State<GamePage> {
         roundToNearestTens(posY).toDouble());
   }
 
-  bool detectCollision(Offset? position) {
-    return true;
+  bool detectCollision(Offset position) {
+    if (position.dx >= upperBoundX! && direction == Direction.right) {
+      return true;
+    } else if (position.dx <= lowerBoundX! && direction == Direction.left) {
+      return true;
+    } else if (position.dy >= upperBoundY! && direction == Direction.down) {
+      return true;
+    } else if (position.dy <= lowerBoundY! && direction == Direction.up) {
+      return true;
+    }
+
+    return false;
   }
 
   void showGameOverDialog() {
@@ -133,11 +143,37 @@ class _GamePageState extends State<GamePage> {
       nextPosition = Offset(position.dx, position.dy + step);
     }
 
+    if (detectCollision(position) == true) {
+      if (timer != null && timer!.isActive) timer!.cancel();
+      await Future.delayed(
+          Duration(milliseconds: 500), () => showGameOverDialog());
+      return position;
+    }
+
     return nextPosition;
   }
 
   void drawFood() {
-    return;
+    if (foodPosition == null) {
+      foodPosition = getRandomPositionWithinRange();
+    }
+
+    food = Piece(
+      posX: foodPosition!.dx.toInt(),
+      posY: foodPosition!.dy.toInt(),
+      size: step,
+      color: Color(0XFF8EA604),
+      isAnimated: true,
+    );
+
+    if (foodPosition == positions[0]) {
+      length++;
+      speed = speed + 0.25;
+      score = score + 5;
+      changeSpeed();
+
+      foodPosition = getRandomPositionWithinRange();
+    }
   }
 
   List<Piece> getPieces() {
@@ -192,10 +228,23 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget getScore() {
-    return Container();
+    return Positioned(
+      top: 50.0,
+      right: 40.0,
+      child: Text(
+        "Score: " + score.toString(),
+        style: TextStyle(fontSize: 24.0),
+      ),
+    );
   }
 
   void restart() {
+    score = 0;
+    length = 5;
+    positions = [];
+    direction = getRandomDirection();
+    speed = 1;
+
     changeSpeed();
   }
 
@@ -239,10 +288,13 @@ class _GamePageState extends State<GamePage> {
         color: Color(0XFFF5BB00),
         child: Stack(
           children: [
+            getPlayAreaBorder(),
             Stack(
               children: getPieces(),
             ),
             getControls(),
+            food!,
+            getScore(),
           ],
         ),
       ),
