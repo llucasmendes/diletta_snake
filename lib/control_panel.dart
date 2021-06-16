@@ -6,9 +6,10 @@ import 'direction.dart';
 class ControlPanel extends StatelessWidget {
   const ControlPanel({
     Key? key,
-    required this.onTapped,
+    required this.onPressed,
   }) : super(key: key);
-  final void Function(Direction direction) onTapped;
+
+  final void Function(Direction direction) onPressed;
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -27,7 +28,9 @@ class ControlPanel extends StatelessWidget {
                 ControlButton(
                   icon: Icon(Icons.arrow_left),
                   onPressed: () {
-                    onTapped(Direction.left);
+                    debugPrint("left");
+
+                    onPressed(Direction.left);
                   },
                 ),
               ],
@@ -39,7 +42,9 @@ class ControlPanel extends StatelessWidget {
                 ControlButton(
                   icon: Icon(Icons.arrow_drop_up_sharp),
                   onPressed: () {
-                    onTapped(Direction.up);
+                    debugPrint("up");
+
+                    onPressed(Direction.up);
                   },
                 ),
                 SizedBox(
@@ -48,7 +53,9 @@ class ControlPanel extends StatelessWidget {
                 ControlButton(
                   icon: Icon(Icons.arrow_drop_down_sharp),
                   onPressed: () {
-                    onTapped(Direction.down);
+                    debugPrint("down");
+
+                    onPressed(Direction.down);
                   },
                 ),
               ],
@@ -60,11 +67,10 @@ class ControlPanel extends StatelessWidget {
                 ControlButton(
                   icon: Icon(Icons.arrow_right),
                   onPressed: () {
-                    onTapped(Direction.right);
+                    debugPrint("right");
+
+                    onPressed(Direction.right);
                   },
-                ),
-                Expanded(
-                  child: Container(),
                 ),
               ],
             ),

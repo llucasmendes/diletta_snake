@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ControlButton extends StatelessWidget {
-  final Function? onPressed;
   final Icon? icon;
 
   const ControlButton({
     Key? key,
-    this.onPressed,
+    required this.onPressed,
     this.icon,
   }) : super(key: key);
+
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class ControlButton extends StatelessWidget {
             backgroundColor: Colors.green,
             elevation: 0.0,
             child: this.icon,
-            onPressed: () => this.onPressed,
+            onPressed: onPressed,
           ),
         ),
       ),

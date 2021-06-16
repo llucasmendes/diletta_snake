@@ -63,7 +63,9 @@ class _GamePageState extends State<GamePage> {
         return Direction.down;
       }
     } else {
-      int random = Random().nextInt(4);
+      int maxValue = 4;
+
+      int random = Random().nextInt(maxValue);
       return Direction.values[random];
     }
   }
@@ -97,19 +99,20 @@ class _GamePageState extends State<GamePage> {
         return AlertDialog(
           backgroundColor: Colors.red,
           shape: RoundedRectangleBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 3.0,
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            side: BorderSide(
+              color: Colors.black,
+              width: 3.0,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
           title: Text(
             "Game Over",
             style: TextStyle(color: Colors.white),
           ),
           content: Text(
-            "Your game is over but you played well. Your score is " +
-                score.toString() +
-                ".",
+            "Your game is over but you played well. Your score is ${score.toString()}.",
             style: TextStyle(color: Colors.white),
           ),
           actions: [
@@ -146,7 +149,9 @@ class _GamePageState extends State<GamePage> {
     if (detectCollision(position) == true) {
       if (timer != null && timer!.isActive) timer!.cancel();
       await Future.delayed(
-          Duration(milliseconds: 500), () => showGameOverDialog());
+        Duration(milliseconds: 500),
+        () => showGameOverDialog(),
+      );
       return position;
     }
 
@@ -201,7 +206,7 @@ class _GamePageState extends State<GamePage> {
 
   Widget getControls() {
     return ControlPanel(
-      onTapped: (Direction newDirection) {
+      onPressed: (Direction newDirection) {
         direction = newDirection;
       },
     );
@@ -232,7 +237,7 @@ class _GamePageState extends State<GamePage> {
       top: 50.0,
       right: 40.0,
       child: Text(
-        "Score: " + score.toString(),
+        "Score: ${score.toString()}",
         style: TextStyle(fontSize: 24.0),
       ),
     );
